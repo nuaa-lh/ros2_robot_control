@@ -1,19 +1,18 @@
 # ros2_robot_control
 
-This is our lab code repository for robot control using ros2. Of course you have to install ROS2 and ros2_control first.
+This is our lab code repository for robot control using ros2. Of course you have to install ROS2 and ros2_control first. The codes are developed under Ubuntu 24 with ROS2 Jazzy.
 
 # package dependencies
 
-Please clone the following packages into your ros2's workspace.
+Please clone the following packages into your ros2's workspace. (e.g., ~/ros2_ws)
 
-  1. franka_description (https://github.com/frankaemika/franka_description.git)
+1. franka_description (https://github.com/frankaemika/franka_description.git)
 
 # build from source
 
 1. install dependencies
 
    `sudo apt install qt6-base-dev`
-
 2. go to your workspace's src folder and clone & build the source
 
    ```bash
@@ -27,6 +26,7 @@ Please clone the following packages into your ros2's workspace.
    source ~/ros2_ws/install/local_setup.bash
    ros2 launch robot_monitor robot_monitor_launch.py
    ```
+
 # package list
 
 This repository contains the following packages:
@@ -39,16 +39,14 @@ It is a gui interface which can display the real-time curves of joint states (po
 
 You can run **robot_monitor** as a standalone node to visualize the robot's states.
 
-  ```bash
-  ros2 run robot_monitor robot_monitor
-  ```
+```bash
+ros2 run robot_monitor robot_monitor
+```
 
 before that, do not forget to source the path
 
- ```bash
- source ~/ros2_ws/install/local_setup.bash
- ```
+```bash
+source ~/ros2_ws/install/local_setup.bash
+```
 
 ### 2. continue...
-
-
