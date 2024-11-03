@@ -39,11 +39,15 @@ It is a gui interface which can display the real-time curves of joint states (po
 
 You can run **robot_monitor** as a standalone node to visualize the robot's states.
 
-`ros2 run robot_monitor robot_monitor`
+  ```bash
+  ros2 run robot_monitor robot_monitor
+  ```
 
-Again, do not forget to source the path
+before that, do not forget to source the path
 
-`source ~/ros2_ws/install/local_setup.bash`
+ ```bash
+ source ~/ros2_ws/install/local_setup.bash
+ ```
 
 ### 2. continue...
 
