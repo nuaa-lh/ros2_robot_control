@@ -11,7 +11,6 @@
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
-  <depend> qt6-base-dev</depend>
 
   <exec_depend>ros2launch</exec_depend>
   <exec_depend>joint_state_publisher_gui</exec_depend>
