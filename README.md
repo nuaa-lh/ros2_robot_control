@@ -4,7 +4,7 @@ This is our lab code repository for robot control using ros2. Of course you have
 
 # package dependencies
 
-Please clone the following packages into your ros2's workspace. (e.g., ~/ros2_ws)
+Please clone the following packages into the src folder of your ros2's workspace. (e.g., ~/ros2_ws)
 
 1. franka_description (https://github.com/frankaemika/franka_description.git)
 
@@ -12,15 +12,18 @@ Please clone the following packages into your ros2's workspace. (e.g., ~/ros2_ws
 
 1. install dependencies
 
-   `sudo apt install qt6-base-dev`
-2. go to your workspace's src folder and clone & build the source
+   ```bash
+   sudo apt install qt6-base-dev
+   ```
+2. sudo apt install qt6-base-dev`
+3. go to your workspace's src folder and clone & build the source
 
    ```bash
    cd ~/ros2_ws/src
    git clone https://github.com/JunchenWang/ros2_robot_control.git
    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --symlink-install
    ```
-3. launch the monitor test
+4. launch the monitor test
 
    ```bash
    source ~/ros2_ws/install/local_setup.bash
