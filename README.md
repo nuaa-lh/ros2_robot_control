@@ -28,6 +28,7 @@ Please clone the following packages into the src folder of your ros2's workspace
    source ~/ros2_ws/install/local_setup.bash
    ros2 launch robot_monitor robot_monitor_launch.py
    ```
+Now, you can drag the sliders on the joint_state_publisher_gui to watch the position curves of each joint.
 
 # package list
 
@@ -49,4 +50,5 @@ This repository contains the following packages:
    ```bash
    source ~/ros2_ws/install/local_setup.bash
    ```
+   Now, if some other node on the ROS2 network published messages into the "joint_states" topic, the **robot_monitor** can capture the signals. 
 2. continue...
