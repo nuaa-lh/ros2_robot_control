@@ -13,7 +13,7 @@ Please clone the following packages into the src folder of your ros2's workspace
 1. install dependencies
 
    ```bash
-   sudo apt install qt6-base-dev qt6-charts-dev
+   sudo apt install qt6-base-dev qt6-charts-dev libjsoncpp-dev
    ```
 2. go to your workspace's src folder and clone & build the source
 
