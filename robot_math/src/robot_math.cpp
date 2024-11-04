@@ -10,14 +10,6 @@
 namespace robot_math
 {
 
-    RobotMath::RobotMath()
-    {
-    }
-
-    RobotMath::~RobotMath()
-    {
-    }
-
     Eigen::Matrix4d pose2T(const std::vector<double> &pose)
     {
         Eigen::Vector3d rv(pose[3], pose[4], pose[5]);
@@ -472,7 +464,7 @@ namespace robot_math
     {
         ::forward_kin_general(robot, q, T.data());
     }
-    
+
     class jsexception : public std::exception
     {
         virtual const char *what() const throw()

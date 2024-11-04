@@ -3,8 +3,8 @@
 <package format="3">
   <name>robot_math</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="wjc@todo.todo">wjc</maintainer>
+  <description>robot mathematics</description>
+  <maintainer email="wangjunchen@buaa.edu.cn">wjc</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
