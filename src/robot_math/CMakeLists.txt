@@ -15,27 +15,22 @@ find_package(jsoncpp REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 file(GLOB_RECURSE matlab_srcs src/matlab_code/*.cpp)
+file(GLOB_RECURSE robot_math_srcs src/robot_math/*.cpp)
 
 add_library(robot_math SHARED
-           src/robot_math.cpp
-           src/OnlineTrajPlanner.cpp
-           ${matlab_srcs}
+            ${matlab_srcs}
+            ${robot_math_srcs}
           )
 
-          # src/matlab_code/derivative_jacobian_matrix.cpp
-          # src/matlab_code/jacobian_matrix.cpp
-          # src/matlab_code/m_c_g_matrix.cpp
-          # src/matlab_code/logR.cpp
-          # src/matlab_code/rt_nonfinite.cpp
-          # src/matlab_code/svd.cpp
 add_library(robot_math::robot_math ALIAS robot_math)
 target_compile_features(robot_math PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 target_include_directories(robot_math PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/matlab_code>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/robot_math>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
   )
 
-  
 # Causes the visibility macros to use dllexport rather than dllimport,
 # which is appropriate when building the dll but not consuming it.
 target_compile_definitions(robot_math PRIVATE "ROBOT_MATH_BUILDING_LIBRARY")
@@ -68,6 +63,7 @@ install(TARGETS test_robot_math
 
 #ament_target_dependencies(robot_monitor rclcpp std_msgs sensor_msgs)
 
+target_link_libraries(robot_math jsoncpp_lib)
 target_link_libraries(test_robot_math robot_math)
 
 
@@ -92,5 +88,6 @@ ament_export_libraries(
 ament_export_targets(
   export_${PROJECT_NAME}
 )
+
 
 ament_package()
