@@ -27,21 +27,37 @@ namespace robot_math
 		coder::array<double, 3U> M;
 		double ME[16];
 		coder::array<double, 2U> com;
+        coder::array<double, 2U> jtMechanics;
 		double gravity[3];
 		double TCP[16];
 	};
     // pose: first three are position
+    // 将6x1的TCP位姿转换为4x4的齐次变换矩阵
 	Eigen::Matrix4d pose2T(const std::vector<double> &pose);
+    // 将4x4的齐次变换矩阵转换为6x1的TCP位姿
 	std::vector<double> T2pose(const Eigen::Matrix4d &T);
+
+    // 返回w的反对称矩阵
 	Eigen::Matrix3d so_w(const Eigen::Vector3d &w);
+    // 返回V的李代数形式
 	Eigen::Matrix4d se_twist(const Eigen::Vector6d &V);
+    // 正则化twist，返回7x1的twist，前6个为单位向量，最后一个为角度
 	Eigen::Vector7d normalize_twist(const Eigen::Vector6d &V);
+
+    // 将3x1的轴角向量转换为3x3的旋转矩阵（指数映射）
 	Eigen::Matrix3d exp_r(const Eigen::Vector3d &r);
+    // 将3x3的旋转矩阵转换为3x1的轴角向量（对数映射）
 	Eigen::Vector3d logR(const Eigen::Matrix3d &R);
+    // 将6x1的twist转换为4x4的齐次变换矩阵（指数映射）
 	Eigen::Matrix4d exp_twist(const Eigen::Vector6d &twist);
+    // 将4x4的齐次变换矩阵转换为6x1的twist（对数映射）
 	Eigen::Vector6d logT(const Eigen::Matrix4d &T);
+
+    // 返回齐次变换矩阵T的逆矩阵
 	Eigen::Matrix4d invertT(const Eigen::Matrix4d &T);
+    // 返回齐次变换矩阵T的伴随矩阵
 	Eigen::Matrix6d adjoint_T(const Eigen::Matrix4d &T);
+    // 返回6x1的twist的伴随矩阵
 	Eigen::Matrix6d adjoint_V(const Eigen::Vector6d &V);
 
 	Eigen::MatrixXd pInv(const Eigen::MatrixXd &matrix, double tol = 1e-4);
