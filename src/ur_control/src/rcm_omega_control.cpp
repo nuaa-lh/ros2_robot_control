@@ -20,39 +20,47 @@ void RcmOmegaControl::performRcmControl()
     Robot robot = UR10e(config_file_path.c_str());
     RTDEReceiveInterface rtde_state("192.168.31.201");
     RTDEControlInterface rtde_control("192.168.31.201");
-    std::vector<double> angleStart = {-1, -1.12, 1.63, -0.47, 1.43, -1.82};
+    std::vector<double> angleStart = {-0.12, -1.93, -1.75, -0.95, 1.53, 0.72};
     rtde_control.moveJ(angleStart, 0.5);
     std::this_thread::sleep_for(std::chrono::duration<double>(0.5));
     
-    Matrix4d Tcp = Matrix4d::Identity();
     double dt = 0.002;
    
     bool flag = false;
     double od, oa, ob, oc;
-    double xyz[3], abc[3], gap;
+    double xyz[3], abc[3];
     openHaptics();
     dhdEnableForce(DHD_OFF);
     auto pose = rtde_state.getActualTCPPose();
     Matrix4d T_init = pose2T(pose);
-    Matrix4d dT, T;
-    double p[4] = {0}, v[4];
-    double rcm[] = {0.198,0,0.096};  // rcm精度实验的rcm位置
-    Tcp(2, 3) = rcm[2];
+    Matrix4d dT;
+    double p[4] = {0};
+    double rcm[] = {-0.247,-0.247,0.18};  // rcm精度实验的rcm位置
+
     double tol[] = {1e-7, 1e-5};
     double flag_inv;
 
     std::vector<double> qt(6);
 
     Eigen::Matrix4d Td = Eigen::Matrix4d::Identity();
+    // 建立虚拟法兰相对实际法兰的齐次变换矩阵 T_corrected
     Eigen::Matrix4d T_corrected = Eigen::Matrix4d::Identity();
-    Eigen::Matrix3d R_corrected;
-    R_corrected = Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitY());
+    // Eigen::Matrix3d R_corrected;
+    // R_corrected = Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitY());
+    Eigen::Matrix3d R_corrected {      // construct a 2x2 matrix
+      {sqrt(2)/2,0,-sqrt(2)/2},     // first row
+      {-sqrt(2)/2,0,-sqrt(2)/2},      // second row
+      {0,1,0}
+};
     T_corrected.block(0, 0, 3, 3) = R_corrected;
     Eigen::Vector3d rcm_vector(rcm[0], rcm[1], rcm[2]);
     Eigen::Vector3d rcm_corrected = R_corrected.transpose() * rcm_vector;
     rcm[0] = rcm_corrected(0);
     rcm[1] = rcm_corrected(1);
     rcm[2] = rcm_corrected(2);
+
+    // Eigen::Matrix4d T_corrected = Eigen::Matrix4d::Identity();
+    // T_corrected.block<3, 3>(0, 0) = Eigen::AngleAxisd(M_PI / 2, Eigen::Vector3d::UnitY()).toRotationMatrix();
 
     MovingFilter<double> pFilter(4);
 
@@ -85,10 +93,14 @@ void RcmOmegaControl::performRcmControl()
             memcpy(p, dabc, 4 * sizeof(double));
         }
         pFilter.filtering(p, p);
-        generateRCM(p[0], p[1], -p[3], p[2], rcm, dT.data());
+        // 先绕x转b 再绕y转-c 再绕z转-a 最后沿着z走d
+        // 先绕x转-p[3] 再绕y转-p[2] 再绕z转-p[1] 最后沿着z走p[0]
+        // generateRCM(d, a, b, c, p_rcm)
+        generateRCM(p[0], p[1]/2, p[2]/2, p[3]/2, rcm, dT.data());
 
         //Td = T_init * dT;
-        Td = T_init * T_corrected * dT * invertT(T_corrected);
+        // T_init * T_corrected表示虚拟法兰相对基坐标系的变换矩阵
+        Td = ((T_init * T_corrected) * dT) * invertT(T_corrected);
 
         inverse_kin_general(&robot, Td, q, tol, qt, &flag_inv);
         if (flag_inv == 1.0)

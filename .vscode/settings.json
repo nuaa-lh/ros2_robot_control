@@ -1,6 +1,14 @@
 {
     "cmake.ignoreCMakeListsMissing": true,
     "files.associations": {
-        "dense": "cpp"
-    }
+        "dense": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp"
+    },
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ]
 }
